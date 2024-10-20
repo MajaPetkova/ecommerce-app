@@ -12,7 +12,7 @@ const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
 
   const addToCart = async (itemId, size) => {
-    if(!size){
+    if (!size) {
       toast.error("Select Product Size");
       return;
     }
@@ -28,29 +28,34 @@ const ShopContextProvider = (props) => {
       cartData[itemId] = {};
       cartData[itemId][size] = 1;
     }
-    setCartItems(cartData)
+    setCartItems(cartData);
   };
 
-  const getCartCount =() =>{
-    
+  const getCartCount = () => {
     let totalCount = 0;
 
     for (const items in cartItems) {
-      for(const item in cartItems[items] ){
-        try{
-          if(cartItems[items][item]> 0 ){
-                totalCount +=cartItems[items][item]
+      for (const item in cartItems[items]) {
+        try {
+          if (cartItems[items][item] > 0) {
+            totalCount += cartItems[items][item];
           }
-        }catch(err){
-
-        }
+        } catch (err) {}
       }
     }
     return totalCount;
-  }
+  };
   // useEffect(()=>{
   //  console.log(cartItems)
   // }, [cartItems])
+
+  const updateQuantity = async (itemId, size, quantity) => {
+    let cartData = structuredClone(cartItems);
+
+    cartData[itemId][size] = quantity;
+    setCartItems(cartData)
+  
+  };
 
   const value = {
     products,
@@ -60,9 +65,10 @@ const ShopContextProvider = (props) => {
     setSearch,
     showSearch,
     setShowSearch,
-    addToCart, 
-    cartItems, 
-    getCartCount
+    addToCart,
+    cartItems,
+    getCartCount,
+    updateQuantity
   };
 
   return (
