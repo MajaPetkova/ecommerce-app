@@ -32,7 +32,7 @@ const About = () => {
         <b className="text-gray-800">Our Mission</b>
         <p>
           Our mission at Forever is to empower customers with choice, confidence
-          and convenience. We're dedicated to providing a seamless shopping
+          and convenience. We are dedicated to providing a seamless shopping
           experience that extends expectations, from browsing and ordering to
           delivery and beyond.
         </p>
