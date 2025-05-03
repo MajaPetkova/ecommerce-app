@@ -45,7 +45,7 @@ const addProduct = async (req, res) => {
 
     const product = await productData.save();
     console.log(product)
-    res.json({ success: true, message: "Product ist created" });
+    res.json({ success: true, message: "Product is created" });
   } catch (err) {
     console.log(err);
     res.json({ success: false, message: err.message });
@@ -53,11 +53,39 @@ const addProduct = async (req, res) => {
 };
 
 // get products
-const getProducts = async (req, res) => {};
+const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find({})
+    res.json({ success: true, products })
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, message: err.message });
+  }
+};
 
 // remove product
-const removeProduct = async (req, res) => {};
+const removeProduct = async (req, res) => {
+  try {
+   await Product.findByIdAndDelete(req.body.id);
+   res.json({success: true, message : "Product removed"})
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, message: err.message });
+  }
+
+};
 
 // get one product
-const singleProduct = async (req, res) => {};
+const singleProduct = async (req, res) => { 
+  try{
+    const {productId} = req.body;
+    const product = await Product.findById(productId)
+    res.json({success:true , product})
+  }catch(err){
+    console.log(err);
+    res.json({ success: false, message: err.message });
+  }
+};
+
+
 export { addProduct, getProducts, removeProduct, singleProduct };
