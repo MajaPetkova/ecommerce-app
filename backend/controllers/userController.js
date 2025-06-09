@@ -21,13 +21,13 @@ const loginUser = async (req, res) => {
     if (isMatch) {
       const token = createToken(user._id);
       res.json({ success: true, token });
-    }else{
-      res.send({success:false, message:"Invalid Credentials"})
+    } else {
+      res.send({ success: false, message: "Invalid Credentials" })
     }
 
   } catch (err) {
     console.log(err);
-    res.send({success:false, message:err.message})
+    res.send({ success: false, message: err.message })
   }
 };
 
@@ -67,6 +67,20 @@ const registerUser = async (req, res) => {
 };
 
 //route for admin login
-const loginAdmin = async (req, res) => {};
+const loginAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log(process.env.ADMIN_EMAIL)
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+      const token = jwt.sign(email + password, process.env.JWT_SECRET)
+      res.json({success:true, token})
+    }else{
+      res.json({success:false, message:"Invalid credentials"})
+    }
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false, message: err.message });
+  }
+};
 
 export { loginUser, registerUser, loginAdmin };
