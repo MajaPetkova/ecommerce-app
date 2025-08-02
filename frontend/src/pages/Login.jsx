@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [currentState, setCurrentState] = useState("Sign Up");
@@ -13,16 +14,35 @@ const Login = () => {
     e.preventDefault();
     try{
        if(currentState === "Sign Up"){
-         const res= await axios.post(backendUrl + "/api/user/register", {name, email, password})
-        console.log(res.data)
+         const res= await axios.post(backendUrl + "/api/user/register", {name, email, password});
+      
+        if(res.data.success){
+          setToken(res.data.token);
+          localStorage.setItem('token', res.data.token)
+        }else{
+          toast.error(res.data.message)
+        }
        }else{
-
+         const res= await axios.post (backendUrl + "/api/user/login", {email, password});
+        if(res.data.success){
+          setToken(res.data.token)
+          localStorage.setItem('token', res.data.token)
+        }else{
+          toast.error(res.data.message)
+        }
        }
     }catch(err){
-
+       console.log(err);
+       toast.error(err.message)
     }
-
   }
+  
+  useEffect(()=>{
+  if(token){
+    navigate("/")
+  }
+  }, [token])
+  
 
   return (
     <form onSubmit={onSubmitHandler} className="flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-black">
