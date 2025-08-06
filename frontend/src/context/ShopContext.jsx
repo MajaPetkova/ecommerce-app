@@ -101,6 +101,11 @@ const getProductsData = async()=>{
 useEffect(()=>{
   getProductsData()
 },[])
+useEffect(()=>{
+   if(!token && localStorage.getItem('token')){
+      setToken(localStorage.getItem('token'))
+   }
+},[])
 
   const value = {
     products,
@@ -115,6 +120,7 @@ useEffect(()=>{
     getCartCount,
     updateQuantity,
     getCartAmount,
+    setCartItems,
     navigate,
     backendUrl,
     token, setToken
